@@ -1,0 +1,5 @@
+name:		hcattest
+info:		hcatIL call test
+mode:		rwx
+source:		hcattest.bin
+output:		hcattest.fx

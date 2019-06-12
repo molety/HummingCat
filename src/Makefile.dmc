@@ -1,0 +1,108 @@
+#
+# Copyright (C) 1999-2001 Qute Corporation. All rights reserved.
+#
+# makefile for samples/*, Digital Mars C++ version
+#	$Id: makefile.dmc,v 1.2 2001/06/09 19:09:02 sonoda Exp $
+
+# arranged for GNU make
+# last modified 2019/06/12  molety
+
+.SUFFIXES:
+.SUFFIXES: .fx .il .exe .bin .bil .o .obj .asm .c .cpp
+
+WWDIR=C:\WWitch
+#WWDIR=D:\WWitch
+
+# start up routine
+CTWW_ASCII1=$(WWDIR)\lib\ctwwasc1.obj
+CTWW_ASCII2=$(WWDIR)\lib\ctwwasc2.obj
+CTWW_JAPANESE1=$(WWDIR)\lib\ctwwjpn1.obj
+CTWW_JAPANESE2=$(WWDIR)\lib\ctwwjpn2.obj
+CTWW=$(CTWW_JAPANESE2)
+
+C0IL=$(WWDIR)\lib\c0ilib.obj
+CTIL=$(WWDIR)\lib\ctilib.obj
+
+LIBWW1=$(WWDIR)\usr\lib\libwwdmc.lib $(WWDIR)\lib\libww.lib
+LIBWW2=$(WWDIR)\lib\libwwc.lib
+LIBWWUSR=
+
+# copying command
+#CP=cp -p
+CP=copy
+
+# deleting command
+#RM=rm -f
+RM=del
+
+CC=dmc
+CFLAGS=-msw -NL -j0 -a1 -0 -o -Bj -r -I$(WWDIR)\include
+CDEFINES=
+DOSCFLAGS=-ms -j0 -a1 -0 -o -Bj -r
+DOSCDEFINES=
+
+AS=nasm
+ASFLAGS=-f obj -w+macro-params -w+orphan-labels
+ASDEFINES=
+
+LD=link
+#LDFLAGS=/MAP /DETAILEDMAP /INFORMATION /XREF
+#LDFLAGS=/MAP /DETAILEDMAP /XREF
+LDFLAGS=/MAP:GROUP /DETAILEDMAP /INFORMATION /XREF
+LD_RSP=link.rsp
+
+LIB=lib
+
+#WonderWitch Program
+.bin.fx:
+	mkfent $*.cf
+.o.bin:
+	@echo $(CTWW) $^ > $(LD_RSP)
+	@echo $*,$* >> $(LD_RSP)
+	@echo $(LIBWW1)+ >> $(LD_RSP)
+	@echo $(LIBWW2) $(LIBWWUSR) >> $(LD_RSP)
+	$(LD) $(LDFLAGS) @$(LD_RSP)
+	exe2fbin $*.exe $*.bin
+	$(RM) $*.exe
+
+#WonderWitch IL
+.bil.il:
+	mkfent $*.cf
+.o.bil:
+	@echo $^ $(C0IL) > $(LD_RSP)
+	@echo $*,$* >> $(LD_RSP)
+	@echo $(LIBWW1)+ >> $(LD_RSP)
+	@echo $(LIBWW2) $(LIBWWUSR) >> $(LD_RSP)
+	$(LD) $(LDFLAGS) @$(LD_RSP)
+	exe2fbin $*.exe $*.bil
+	$(RM) $*.exe
+
+#WonderWitch (common)
+.c.o:
+	$(CC) -c -o$*.o $(CFLAGS) $(CDEFINES) $<
+.cpp.o:
+	$(CC) -c -o$*.o $(CFLAGS) $(CDEFINES) $<
+.asm.o:
+	$(AS) -o $*.o $(ASFLAGS) $(ASDEFINES) $<
+
+#DOS Program
+.obj.exe:
+	$(LD) $(LDFLAGS) $^
+.c.obj:
+	$(CC) -c $(DOSCFLAGS) $(DOSCDEFINES) $<
+.asm.obj:
+	$(AS) -o $*.obj $(ASFLAGS) $(ASDEFINES) $<
+
+default: all
+
+clean:
+	-$(RM) *.rsp
+	-$(RM) *.o
+	-$(RM) *.obj
+	-$(RM) *.map
+	-$(RM) *.bin
+	-$(RM) *.bil
+distclean: clean
+	-$(RM) *.fx
+	-$(RM) *.il
+	-$(RM) *.exe
