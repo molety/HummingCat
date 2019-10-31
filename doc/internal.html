@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>内部資料など</title>
+<style type="text/css">
+<!--
+  body {	color: black;
+		background-color: #d0d0d0;
+		line-height: 150%;
+		margin: 2% 8% 2% 8%;
+  }
+  h1 {		text-align: center;
+  }
+-->
+</style>
+</head>
+
+<body>
+
+<h2 style="text-align: center;">サウンドドライバ 'Humming Cat' for WonderWitch</h2>
+<div style="text-align: center;">内部文書</div>
+
+<dl>
+  <dt><a href="#arch">ドライバおよび周辺部の構造</a></dt>
+  <dt><a href="#motive">製作動機</a></dt>
+  <dt><a href="#waste">どうでもいいこと</a></dt>
+</dl>
+
+<div style="text-align: right;">
+資料
+<dl>
+  <dt><a href="function.txt">ファンクションコール一覧</a></dt>
+  <dt><a href="pack.txt">リソースパックフォーマット</a></dt>
+  <dt><a href="command.txt">リソース形式スコアデータ資料</a></dt>
+  <dt><a href="hcmml.txt">hcmml.exe説明書(旧仕様です)</a></dt>
+  <dt><a href="history.txt">更新履歴</a></dt>
+</dl>
+</div>
+
+<hr><!-- separator -->
+<h3><a name="arch">ドライバおよび周辺部の構造</a></h3>
+<p>
+サウンドドライバ 'Humming Cat' for WonderWitchでは、ドライバ本体IL
+に何もかもの機能を詰め込まず、サポートライブラリでその分を補う形を
+採っています。
+<p>
+具体的には割り込みフックへの接続部分や、リソースアクセス部分などです。<br>
+これらの部分は処理が面倒だったり、C言語開発用のライブラリ(libww.lib)
+をリンクする必要があったりするので、アセンブラで開発しているドライバ本体
+部分とは分けた方がなにかと都合がいいと考えました。
+</p>
+<p>
+Humming Catのサポートライブラリは、WonderWitchのいろいろな機能の
+ためのライブラリと合わせてBlack Cat Libraryとして
+まとめつつあります(まだほんの少ししかできていません)。
+</p>
+<p>
+Humming Catのドライバ本体はあまり使いやすい形になっていないので、
+通常の用途ではサポートライブラリを通して使ってもらい、特殊なことを
+したいユーザーは頑張って直接ドライバを叩いて下さい、という方針です。
+</p>
+<hr width="50%"><!-- separator -->
+<p>
+また、割り込みフックへの接続をドライバ本体で行わないのには
+もう一つ狙いがあります。Humming Catは、通常V-BLANKで動作しますが、
+それでは演奏精度が足りないという方への文句封じのために、H-BLANKにも
+接続できるように設計しています(ただし未テスト)。その辺りは
+ユーザープロセス側で適当にやって下さい、ということです。
+</p>
+
+<hr><!-- separator -->
+<h3><a name="motive">製作動機</a></h3>
+<p>
+WonderWitch関連のいろんなWebページを見ていて、「SoundILは重い」と
+いう話を複数見かけたので、「それならV-BLANKで動くのを作ったらどうか」
+と考えたのが一つの理由です。
+</p>
+<p>
+もう一つは、自分で少しSoundILをいじってみて、どうも動作がおかしい/違う
+仕様のほうがいいのではと思うところがあり、自分でドライバを作れば
+好きなようにできるよな、と考えたからです。具体的にはスラー/ポルタメント
+等の挙動ですが、今回の版ではまだそれらの機能が載っていません。
+将来の版で実装する予定です。
+</p>
+<hr width="50%"><!-- separator -->
+<p>
+Java版MMLコンパイラを作った理由は「Cで書いてたら頭がこんがらがって
+収拾つかなくなったので、書きやすそうなJavaに飛びついた」ですが、
+それでは情けないので「多くのプラットフォームに対応させるため」と
+いうことにしといて下さい。
+</p>
+
+<hr><!-- separator -->
+<h3><a name="waste">どうでもいいこと</a></h3>
+<p>
+β01版公開当時、あまりにどうしようもないレベルだったためにα版に
+しようと思ったんですが、そうしませんでした。
+</p>
+<div style="text-align: center;">α　…　hcalpha01.lzh</div>
+<div style="text-align: center;">β　…　hcbeta01.lzh</div>
+<p>
+αだとファイル名が8+3文字に収まらないから…。そんな理由でαレベル
+(あるいはそれ以下)のものをβと称して公開したのでした。<br>
+ごめんなさい、石投げないで下さい。
+</p>
+
+<hr><!-- separator -->
+<a href="../README.html">戻る</a>
+
+</body>
+
+</html>

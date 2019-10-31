@@ -1,0 +1,118 @@
+◎パッケージデータフォーマット   ver0.01
+
+[リソース共通ヘッダ]
+			ALIGN 16
++00h		WORD magic		リソースファイルを示すマジックナンバー'FR'
++02h		WORD type		リソースタイプ'HC'
++04h		WORD size		ヘッダも含んだリソース全体のサイズ(16バイト単位)
++06h		short id		同タイプのリソースを識別するID番号(オプション)
+
+[Humming Cat パッケージヘッダ]
++08h		WORD package_ver	パッケージフォーマットバージョン
+					(上位バイト:UU、下位バイト:LLとするとUU.LL)
++0ah		WORD compiler_ver	MMLコンパイラのバージョン
+					(上位バイト:UU、下位バイト:LLとするとUU.LL)
++0ch		WORD intrpt_freq	想定している割り込み周波数
++0eh		WORD env_interval	想定しているエンベロープ間隔
++10h		WORD waveform_chunk	波形チャンクの開始アドレス@w(リソース先頭から、16バイト単位)
++12h		WORD ampenv_chunk	音量エンベロープチャンクの開始アドレス@a
++14h		WORD pchenv_chunk	音程エンベロープチャンクの開始アドレス@p
++16h		WORD score_chunk	スコアチャンクの開始アドレス@s
++18h		BYTE[x] comment		パッケージコメント('\0'終端)
+
+[波形チャンクヘッダ]
+			ALIGN 16
+@w+00h		BYTE type		'W'
+@w+01h		BYTE n_item		波形の個数
+@w+02h		WORD paragraph_size	波形チャンクのサイズ(16バイト単位)
+@w+04h		BYTE item[0].number	波形0の波形番号
+@w+05h		BYTE item[0].ptr_l	波形0へのポインタw0(@wから、下位4bit)
+@w+06h		WORD item[0].ptr_u	波形0へのポインタw0(@wから、上位16bit)
+@w+08h		BYTE item[1].number	波形1の波形番号
+@w+09h		BYTE item[1].ptr_l	波形1へのポインタw1(@wから、下位4bit)
+@w+0ah		WORD item[1].ptr_u	波形1へのポインタw1(@wから、上位16bit)
+	...
+
+[波形データ] (ドライバ本体に食わせるデータ)
+			ALIGN 2
+@w+w0		BYTE[16] data0		波形0のデータ本体
+			ALIGN 2
+@w+w1		BYTE[16] data1		波形1のデータ本体
+	...
+
+[音量エンベロープチャンクヘッダ]
+			ALIGN 16
+@a+00h		BYTE type		'A'
+@a+01h		BYTE n_item		音量エンベロープの個数
+@a+02h		WORD paragraph_size	音量エンベロープチャンクのサイズ(16バイト単位)
+@a+04h		BYTE item[0].number	音量エンベロープ0のエンベロープ番号
+@a+05h		BYTE item[0].ptr_l	音量エンベロープ0へのポインタa0(@aから、下位4bit)
+@a+06h		WORD item[0].ptr_u	音量エンベロープ0へのポインタa0(@aから、上位16bit)
+@a+08h		BYTE item[1].number	音量エンベロープ1のエンベロープ番号
+@a+09h		BYTE item[1].ptr_l	音量エンベロープ1へのポインタa1(@aから、下位4bit)
+@a+0ah		WORD item[1].ptr_u	音量エンベロープ1へのポインタa1(@aから、上位16bit)
+	...
+
+[音量エンベロープデータ] (ドライバ本体に食わせるデータ)
+			ALIGN 2
+@a+a0+00h	WORD release_ptr0	リリース部へのポインタ(@a+a0から、1バイト単位)
+@a+a0+02h	BYTE ini_volume0	音量エンベロープ0の初期音量
+@a+a0+03h	BYTE ini_panpot0	音量エンベロープ0の初期パンポット
+@a+a0+04h	BYTE[x] data0		音量エンベロープ0のデータ本体
+			ALIGN 2
+@a+a1+00h	WORD release_ptr1	リリース部へのポインタ
+	...
+
+[音程エンベロープチャンクヘッダ]
+			ALIGN 16
+@p+00h		BYTE type		'P'
+@p+01h		BYTE n_item		音程エンベロープの個数
+@p+02h		WORD paragraph_size	音程エンベロープチャンクのサイズ(16バイト単位)
+@p+04h		BYTE item[0].number	音程エンベロープ0のエンベロープ番号
+@p+05h		BYTE item[0].ptr_l	音程エンベロープ0へのポインタp0(@pから、下位4bit)
+@p+06h		WORD item[0].ptr_u	音程エンベロープ0へのポインタp0(@pから、上位16bit)
+@p+08h		BYTE item[1].number	音程エンベロープ1のエンベロープ番号
+@p+09h		BYTE item[1].ptr_l	音程エンベロープ1へのポインタp1(@pから、下位4bit)
+@p+0ah		WORD item[1].ptr_u	音程エンベロープ1へのポインタp1(@pから、上位16bit)
+	...
+
+[音程エンベロープデータ] (ドライバ本体に食わせるデータ)
+			ALIGN 2
+@p+p0+00h	WORD release_ptr0	リリース部へのポインタ(ダミー)(@p+p0から、1バイト単位)
+@p+p0+02h	WORD ini_detune0	音程エンベロープ0の初期ディチューン
+@p+p0+04h	BYTE[x] data0		音程エンベロープ0のデータ本体
+			ALIGN 2
+@p+p1+00h	WORD release_ptr1	リリース部へのポインタ(ダミー)
+	...
+
+[スコアチャンクヘッダ]
+			ALIGN 16
+@s+00h		BYTE type		'S'
+@s+01h		BYTE n_item		スコアの個数
+@s+02h		WORD paragraph_size	スコアチャンクのサイズ(16バイト単位)
+@s+04h		BYTE item[0].number	スコア0のスコア番号
+@s+05h		BYTE item[0].ptr_l	スコア0へのポインタs0(@sから、下位4bit)
+@s+06h		WORD item[0].ptr_u	スコア0へのポインタs0(@sから、上位16bit)
+@s+08h		BYTE item[1].number	スコア1のスコア番号
+@s+09h		BYTE item[1].ptr_l	スコア1へのポインタs1(@sから、下位4bit)
+@s+0ah		WORD item[1].ptr_u	スコア1へのポインタs1(@sから、上位16bit)
+	...
+
+[スコアデータ] (ドライバ本体に食わせるデータ)
+			ALIGN 2
+@s+s0+00h	BYTE max_track		最大トラック数(常に4)
+@s+s0+01h	BYTE n_track		トラック数(実際に使われている数)
+@s+s0+02h	WORD track_ptr[0]	トラック0へのポインタt00(@s+s0から、1バイト単位)
+@s+s0+04h	WORD track_ptr[1]	トラック1へのポインタt01(@s+s0から、1バイト単位)
+@s+s0+06h	WORD track_ptr[2]	トラック2へのポインタt02(@s+s0から、1バイト単位)
+@s+s0+08h	WORD track_ptr[3]	トラック3へのポインタt03(@s+s0から、1バイト単位)
+@s+s0+0ah	BYTE[x] comment		コメント('\0'終端)
+
+@s+s0+t00	BYTE[x] track_data0	トラック0データ本体
+@s+s0+t01	BYTE[x] track_data1	トラック1データ本体
+@s+s0+t02	BYTE[x] track_data2	トラック2データ本体
+@s+s0+t03	BYTE[x] track_data3	トラック3データ本体
+
+			ALIGN 2
+@s+s1+00h	BYTE max_track		最大トラック数(常に4)
+	...

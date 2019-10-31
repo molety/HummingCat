@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>hcplay 説明書</title>
+<style type="text/css">
+<!--
+  body {	color: black;
+		background-color: #d0d0d0;
+/*		line-height: 150%;*/
+		margin: 2% 8% 2% 8%;
+  }
+  h1 {		text-align: center;
+  }
+  p {
+		line-height: 150%;
+		margin: 0% 8% 2% 8%;
+  }
+  ul {
+		line-height: 150%;
+		margin: 0% 15% 2% 15%;
+  }
+-->
+</style>
+</head>
+
+<body>
+
+<h2 style="text-align: center;">サウンドドライバ 'Humming Cat' for WonderWitch</h2>
+<div style="text-align: center;">データプレーヤ  hcplay</div>
+
+<hr><!-- separator -->
+<h3>◎使い方</h3>
+
+<p>
+hcplay.fxをWonderSwanに転送すると、hcat Data Playerという名前の実行ファイル
+ができるので、これを実行します。
+</p>
+
+<hr width="70%"><!-- separator -->
+<div style="text-align: center;">
+<img src="select.png" alt="ファイル選択画面" width="224" height="144">
+</div>
+<p>
+/ram0ディレクトリに演奏可能なリソース形式ファイルが2つ以上ある場合は、
+ファイル選択画面が表示されます。<br>
+X1/X3ボタンで演奏したいファイルを選択し、Aボタンで決定して下さい。<br>
+また、STARTボタンで終了、Y2ボタンで画面キャプチャ(bmpsaverILが必要)が
+できます。
+</p>
+<p>
+リソースファイルが1つしかない場合は、この画面はスキップされます。<br>
+また、1つもない場合は「No data」と表示されてデータプレーヤは起動できません。
+</p>
+
+<hr width="70%"><!-- separator -->
+
+<div style="text-align: center;">
+<img src="menu.png" alt="メニュー画面" width="224" height="144">
+</div>
+<p>
+メニュー画面では、リソースファイルの演奏その他の操作ができます。<br>
+X1/X3ボタンでメニュー選択、X2/X4ボタンでメニュー項目の値の変更、
+Aボタンで決定です。<br>
+ここでも、STARTボタンで終了、Y2ボタンで画面キャプチャができます。
+</p>
+<p>
+各メニューの内容は以下のとおりです。
+</p>
+<table width="70%" align="center">
+  <tr>
+    <td valign="top">Play</td><td valign="top">……</td>
+    <td>演奏開始します。</td>
+  </tr>
+  <tr>
+    <td valign="top">Pause/Continue</td><td valign="top">……</td>
+    <td>一時停止します。もう一度Aボタンで再開します。</td>
+  </tr>
+  <tr>
+    <td valign="top">Stop</td><td valign="top">……</td>
+    <td>演奏停止します。</td>
+  </tr>
+  <tr>
+    <td valign="top">Score</td><td valign="top">……</td>
+    <td>リソースに複数の曲データが含まれる場合、それらを選択します。<br>
+        値を変更した後、PlayでAボタンを押すと曲が変わります。</td>
+  </tr>
+  <tr>
+    <td valign="top">MasterVol</td><td valign="top">……</td>
+    <td>マスターボリュームを変更します。</td>
+  </tr>
+  <tr>
+    <td valign="top">Speed</td><td valign="top">……</td>
+    <td>演奏スピードを変更します。16が標準で、1が1/16倍速、256が16倍速です。</td>
+  </tr>
+  <tr>
+    <td valign="top">Spk_Scaling</td><td valign="top">……</td>
+    <td>内蔵スピーカのスケーリング値を設定します。<br>
+        データプレーヤ起動直後は、リソースファイル側で指定があればその値が、
+        なければ'--'が表示されています。</td>
+  </tr>
+  <tr>
+    <td valign="top">Quit</td><td valign="top">……</td>
+    <td>データプレーヤを終了します。</td>
+  </tr>
+</table>
+
+<hr><!-- separator -->
+<a href="../README.html">戻る</a>
+
+</body>
+
+</html>

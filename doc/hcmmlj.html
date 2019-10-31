@@ -1,0 +1,446 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>hcmmlj 説明書</title>
+<style type="text/css">
+<!--
+  body {	color: black;
+		background-color: #d0d0d0;
+		line-height: 150%;
+		margin: 2% 8% 2% 8%;
+  }
+  h1 {		text-align: center;
+  }
+-->
+</style>
+</head>
+
+<body>
+
+<h2 style="text-align: center;">サウンドドライバ 'Humming Cat' for WonderWitch</h2>
+<div style="text-align: center;">Java版MMLコンパイラ  hcmmlj</div>
+
+<dl>
+  <dt><a href="#environ">必要なもの</a></dt>
+  <dt><a href="#usage">使い方</a></dt>
+  <dt><a href="#format">MMLの書式</a></dt>
+</dl>
+
+<hr><!-- separator -->
+<h3><a name="environ">◎必要なもの</a></h3>
+Javaランタイム環境が必要です。コンソール版のJavaインタプリタが
+動くことを確認しておいてください。<br>
+作者の環境はJDK1.6.0_17ですが、もっと前のバージョンでも動くかも
+知れません。もし動かない場合はJDK1.6.0_17の環境で試してみてください。
+
+<hr><!-- separator -->
+<h3><a name="usage">◎使い方</a></h3>
+コマンドプロンプトなどから実行します。<br>
+<div style="text-align: center;">
+<code>java -jar hcmmlj.jar [&lt;options&gt;] &lt;target.fr&gt; &lt;input.mml&gt;</code>
+</div>
+
+<p>
+&lt;target.fr&gt;には出力するリソースファイル名を、
+&lt;input.mml&gt;には入力するMMLファイル名を指定します。
+拡張子まで省略せずに指定してください。
+</p>
+<p>
+&lt;options&gt;には以下のものが指定できます。
+</p>
+<ul>
+  <li>-In : リソースIDを指定する</li>
+  <li>-Fn : 想定している割り込み周波数を指定する</li>
+  <li>-En : 想定しているエンベロープ間隔を指定する</li>
+  <li>-Sn : 内蔵スピーカのスケーリング値を指定する</li>
+</ul>
+-Fnと-Enについては、あくまで「想定する」演奏環境の指定です。
+実際にその通りの環境で演奏されるとは限りません。(現状では
+無視されます。)
+
+<p>
+★★ 注意 ★★<br>
+出力ファイル名を先に指定します。これは、以前のhcmmlと
+逆になっているので注意してください。<br>
+将来、hcmml.exe(C言語版)もこの順番に変わります。<br>
+
+<div style="text-align: center;">
+(例)　　<code>java hcmmlj pack.fr input.mml</code>
+</div>
+<div style="text-align: center;">
+input.mmlをコンパイルしてpack.frに出力する
+</div>
+
+
+<hr><!-- separator -->
+<h3><a name="format">◎MMLの書式</a></h3>
+Humming CatのMMLでは、各行ごとに処理が行われます。1行の長さの
+制限はありません。<br>
+アルファベットの大文字・小文字は区別されません。<br>
+スペースやタブは無視されます。
+
+<dl>
+  <dt><a href="#line">行の種類</a></dt>
+  <dt><a href="#comment">コメント</a></dt>
+  <dt><a href="#score">スコアデータ</a></dt>
+  <dt><a href="#waveform">波形定義</a></dt>
+  <dt><a href="#envelope">エンベロープ定義</a></dt>
+</dl>
+
+<hr width="70%"><!-- separator -->
+<h4><a name="line">=== 行の種類 ===</a></h4>
+<p>
+行頭を見てその行の種類を判別します。現在使えるのは
+以下のものです。
+</p>
+
+<div>
+  <code>#n</code><br>
+  トラック指定(n=0,1,2,3)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	この行にトラックnのスコアデータ(演奏データ)が書かれていることを示します。
+	トラックnはWonderSwanのPCMチャンネルnで演奏されます。
+  </div>
+</div>
+
+<div>
+  <code>#pack ...</code><br>
+  リソースパックのコメント文<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	リソースパックにコメントを付けます。
+  </div>
+</div>
+
+<div>
+  <code>#score n ...</code><br>
+  スコア番号 [スコアのコメント文]<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	スコア番号を指定して新しいスコアの記述を開始します。コメントも
+	付けられます。<br>
+	この行を省略していきなりトラック指定行から始めた場合、スコア番号0
+	のスコアが開始したものとみなされます。
+  </div>
+</div>
+
+<div>
+  <code>@n ...</code><br>
+  波形定義<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	波形を定義します。
+  </div>
+</div>
+
+<div>
+  <code>@An ...</code><br>
+  音量エンベロープ定義<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音量エンベロープを定義します。
+  </div>
+</div>
+
+<div>
+  <code>@Pn ...</code><br>
+  音程エンベロープ定義<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音程エンベロープを定義します。
+  </div>
+</div>
+
+
+<hr width="70%"><!-- separator -->
+<h4><a name="comment">=== コメント ===</a></h4>
+<code>;</code>(セミコロン)以降、行末までをコメントとみなします。
+
+<hr width="70%"><!-- separator -->
+<h4><a name="score">=== スコアデータ ===</a></h4>
+<div>
+  <code>CDEFGAB[+|-][n|%n][.*]</code><br>
+  音符<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音符を鳴らします。CDEFGABがドレミファソラシに対応します。<br>
+
+	+を付けると半音上げ、-を付けると半音下げます。<br>
+
+	数値を付けると音長指定になります。例えばC4は4分音符のドです。<br>
+
+	%に続いて数値を書いた場合は絶対音長指定になります。
+	これは全音符を%192として、音符の継続時間を表したものです。
+	2分音符が%96、4分音符が%48…となります。<br>
+
+	<code>.</code>(付点)を付けると音長の1/2を元の音長に加算します。以下、
+	付点を増やすごとに元の音長の1/4,1/8,1/16…を加算していきます。<br>
+
+	音長の範囲は絶対音長で1～4095です。
+  </div>
+</div>
+
+<div>
+  <code>R[n|%n][.*]</code><br>
+  休符<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	指定した長さだけ休みます。<br>
+	休符中は完全に発音が止まります。前の音符のリリース音が終わって
+	いなくても即座に打ち切ります。
+  </div>
+</div>
+
+<div>
+  <code>W[n|%n][.*]</code><br>
+  ウェイト<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	指定した長さだけ何もせずに待ちます。前の音符のリリース音が
+	終わっていなければそのまま鳴り続けます。
+  </div>
+</div>
+
+<div>
+  <code>Tn</code><br>
+  テンポ(n=6..1494あたり)(あまり無茶な値にしないでください)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	曲のテンポを指定します。曲中で変更することもできます。
+  </div>
+</div>
+
+<div>
+  <code>Ln[.*]|L%n[.*]</code><br>
+  デフォルト音長<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音符/休符で音長指定を省略したときの音長を設定します。<br>
+	デフォルト音長のデフォルト値は4(=%48)です。
+  </div>
+</div>
+
+<div>
+  <code>Qn</code><br>
+  音長比(n=1..8)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音符の継続時間に対する、実際の発音時間の比を指定します。
+	発音時間は、継続時間のn/8になります。
+  </div>
+</div>
+
+<div>
+  <code>On</code><br>
+  オクターブ(n=1..8)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	オクターブを指定します。デフォルトはO4です。
+  </div>
+</div>
+
+<div>
+  <code>&lt;&gt;</code><br>
+  オクターブ移動<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	オクターブを移動します。&lt;で1つ下がり、&gt;で1つ上がります。
+  </div>
+</div>
+
+<div>
+  <code>Vn</code><br>
+  音量(n=0..15)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音量を指定します。デフォルトはV13です。
+  </div>
+</div>
+
+<div>
+  <code>V~n</code><br>
+  相対音量(n=-15..15)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音量を相対的に変化させます。
+  </div>
+</div>
+
+<div>
+  <code>()</code><br>
+  相対音量<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音量を相対的に変化させます。(で1つ下がり、)で1つ上がります。
+  </div>
+</div>
+
+<div>
+  <code>Pn</code><br>
+  パンポット(n=-15..0..15)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	パンポットを指定します。
+  </div>
+</div>
+
+<div>
+  <code>P~n</code><br>
+  相対パンポット(n=-30..30)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	パンポットを相対的に変化させます。
+  </div>
+</div>
+
+<div>
+  <code>\n</code><br>
+  ディチューン(n=-2399..2399)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	ディチューン量を指定します。半音の1/25単位で指定できます。<br>
+	デフォルトは0です。<br>
+	※音源自体の精度の限界から、指定したディチューン量と
+	  実際に発音される音がかなり食い違うことがあります。(特に高音部)
+  </div>
+</div>
+
+<div>
+  <code>\~n</code><br>
+  相対ディチューン(n=-4798..4798)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	ディチューン量を相対的に変化させます。
+  </div>
+</div>
+
+<div>
+  <code>Sn</code><br>
+  ピッチシフト(n=-2047..2047)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	ピッチシフト量を指定します。サウンドBIOSのSOUND_SET_PITCHに
+	与えるピッチをこの値だけずらします。\nのディチューン量とは
+	独立に扱われます。
+  </div>
+</div>
+
+<div>
+  <code>S~n</code><br>
+  相対ピッチシフト(n=-4094..4094)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	ピッチシフト量を相対的に変化させます。
+  </div>
+</div>
+
+<div>
+  <code>@Nn</code><br>
+  チャンネル3ノイズ設定(0..7、それ以外の値でノイズなし)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	PCMチャンネル3のノイズモードを設定します。
+  </div>
+</div>
+
+<div>
+  <code>@n</code><br>
+  波形切り替え(n=0..31)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	波形を切り替えます。
+  </div>
+</div>
+
+<div>
+  <code>@An</code><br>
+  音量エンベロープ切り替え(n=0..31)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音量エンベロープを切り替えます。
+  </div>
+</div>
+
+<div>
+  <code>@Pn</code><br>
+  音程エンベロープ切り替え(n=0..31)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	音程エンベロープを切り替えます。
+  </div>
+</div>
+
+<div>
+  <code>[n ...]</code><br>
+  ループ(0(=無限)..255回ループまで、省略値2、ネストは3重まで)<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	[と]で囲まれた中を繰り返します。<br>
+	繰り返す回数は[の後に指定します。0を指定すると無限ループになります。<br>
+	回数を省略すると2回とみなされます。<br>
+	ループの入れ子(ネスト)は3重までできます。<br>
+	ループ中には必ず音符(あるいは休符/ウェイト)を入れてください。
+	空ループを作るとドライバがハングアップします。
+  </div>
+</div>
+
+<div>
+  <code>/</code><br>
+  ループ脱出<br>
+  <div style="margin: 0% 8% 4% 8%;">
+	ループの最後の繰り返し時に、ループの外へ抜けます。<br>
+	※ループ回数が1回のとき(使うことは少ないと思いますが)は、/コマンドは
+	  使用しないでください。暴走します。
+  </div>
+</div>
+
+<p>
+※上記コマンドの中で、名前に「相対」とつくものはループ中で
+正しく(相対的に)動作します。<br>
+&lt;&gt;のオクターブ移動コマンドは、コンパイル時に音程が
+固定されてしまいます。ループ中で使う場合は気をつけてください。
+(そのため、「相対オクターブ」という名前にしていません。)
+</p>
+
+<hr width="70%"><!-- separator -->
+<h4><a name="waveform">=== 波形定義 ===</a></h4>
+行頭の@nに続けて、波形のサンプル値を16進数で表したもの
+(0～9,a～f)を32個、順番に並べます。
+
+<hr width="70%"><!-- separator -->
+<h4><a name="envelope">=== エンベロープ定義 ===</a></h4>
+<p>
+エンベロープは、音符が発音されてからの時間経過とともに
+音量/音程を変化させる機能です。<br>
+Humming Catでは、エンベロープの時間単位(ステップ)は曲のテンポや
+演奏スピードに関わらず一定(1/75秒)です。
+</p>
+<p>
+音量エンベロープは、Qnで指定される発音時間内の部分(メイン部)
+と、それが過ぎてから次の音符に移るまでの間の部分(リリース部)
+に分かれます。<br>
+SoundILと異なり、メイン部とリリース部で処理そのものに違いは
+ありません。発音時間が終わる(キーオフされる)とリリース部
+へ移行するというだけです。<br>
+また、一度音量が0になっても、それから音量を上げるようなエンベロープ
+を指定すれば再び音が鳴り出しますので注意してください。
+</p>
+<p>
+使用するコマンドは、一部を除いてスコアデータ内と同じ動作です。
+</p>
+<p>
+★★音量エンベロープで使用できるコマンド★★<br>
+<span style="margin: 0% 8% 0% 8%;">
+	<code>Vn, V~n, (, ), Pn, P~n, Wn, [n ...], |</code>
+</span>
+<br>
+<code>Vn, V~n</code>は自動的に1ステップのウェイトがかかります。<br>
+<code>P~n</code>の相対パンポットは-15～15までになります。それ以上動かし
+たい時(あまりないと思いますが)は、2つ続けて指定してください。<br>
+<code>Wn</code>はエンベロープの処理ステップ単位(1～1023)です。<br>
+<code>[n ...]</code>は0(無限回)または2～1023回です。<br>
+<code>|</code>はメイン部/リリース部の区切りを表します。<br>
+※ループ内には、必ず時間待ちを行うコマンド(<code>Vn/V~n/Wn</code>)を
+入れてください。無い場合はドライバがハングアップします。
+</p>
+<p>
+★★音程エンベロープで使用できるコマンド★★<br>
+<span style="margin: 0% 8% 0% 8%;">
+	<code>\n, \~n, Sn, S~n, Wn, [n ...]</code>
+</span>
+<br>
+<code>\n, \~n</code>は自動的に1ステップのウェイトがかかります。<br>
+<code>Wn</code>はエンベロープの処理ステップ単位(1～1023)です。<br>
+<code>[n ...]</code>は0(無限回)または2～1023回です。<br>
+※ループ内には、必ず時間待ちを行うコマンド(<code>\n/\~n/Wn</code>)を
+入れてください。無い場合はドライバがハングアップします。
+</p>
+<p>
+※エンベロープ定義は、長くなっても1行に続けて書いてください。
+複数行にまたがる定義は今のところできません。
+</p>
+<p>
+※エンベロープ定義内では、ループのネストはできません。
+</p>
+
+<hr><!-- separator -->
+<a href="../README.html">戻る</a>
+
+</body>
+
+</html>
