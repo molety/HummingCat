@@ -1,0 +1,9 @@
+;builtin waveform & envelope
+@0 ffffffff ffffffff 00000000 00000000
+@1 ffffffff 00000000 ffffffff 00000000
+
+@a0 | v0
+@a1 v12 )))w1 (w2 (w2 (w2 (w2 (w30 ( | [15 (w5 ]
+
+@p0 
+@p1 [100 \10 w3 \-10 w3 ]

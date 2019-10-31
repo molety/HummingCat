@@ -1,0 +1,22 @@
+#pack サンプルMML
+
+@2 0011223344556677 8899aabbccddeeff		;のこぎり波
+@3 0123456789abcdef 0123456789abcdef		;のこぎり波(周期1/2)
+@a2 v5 w9 ))w9 ))w9 ))w9 ))w9 )) | [15 (w3 ]	;ふわーっ
+@a3 [0 p-15 w5 p15 w5 ]				;パンポット操作
+
+@p2 [100 \~12 w5 ]				;スウィープのようなもの
+
+#score 5 ドレミファソラシド
+#0 cdefgab>c<
+
+#score 10 ノイズ
+#3 t96l4v11 @n0c @n1d @n2e @n3f @n4g @n5a @n6b @n7>c< @n255c
+
+#score 17 エンベロープ
+#0 @2 cdefgab>c<
+#0 @3 cdefgab>c< @0
+#0 @a2 cdefgab>c<
+#0 @a3 cdefgab>c< @a0
+#0 @p1 cdefgab>c<				;組み込みエンベロープ
+#0 @p2 cdefgab>c<
