@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=Shift_JIS">
+<title>サウンドドライバ 'Humming Cat' for WonderWitch 説明書</title>
+<style type="text/css">
+<!--
+  body {	color: black;
+		background-color: #d0d0d0;
+		line-height: 150%;
+		margin: 2% 8% 2% 8%;
+  }
+  h1 {		text-align: center;
+  }
+-->
+</style>
+</head>
+
+<body>
+
+<div style="text-align: center;">魔女さんの使い魔</div>
+<h2 style="text-align: center;">サウンドドライバ 'Humming Cat' for WonderWitch</h2>
+
+<div style="text-align: right;">Copyright (c) 2002-2003,2009,2019  molety</div>
+<div style="text-align: center;">丸ごとセット βリリース06回目 説明書</div>
+
+<hr><!-- separator -->
+<p>
+WonderWitch用サウンドドライバです。標準ではV-BLANK割り込み駆動です。
+</p>
+<dl>
+  <dt><a href="#usage">前口上は飛ばしてとにかく試してみる</a></dt>
+  <dt><a href="#environ">実行環境</a></dt>
+  <dt><a href="#build">ソースをアセンブル/コンパイルするには</a></dt>
+  <dt><a href="#license">取り扱い・免責など</a></dt>
+  <dt><a href="#thanks">謝辞</a></dt>
+</dl>
+
+<div style="text-align: right;">
+別文書
+<dl>
+  <dt><a href="doc/hcplay.html">データプレーヤ説明書</a></dt>
+  <dt><a href="doc/hcmmlj.html">Java版MMLコンパイラ説明書</a></dt>
+  <dt><a href="doc/internal.html">内部資料など</a></dt>
+</dl>
+</div>
+
+<h3>◎はじめに注意</h3>
+このサウンドドライバはまだβ版です。今後、大幅な仕様変更が
+為される可能性もあり、その際に互換性は考慮しないつもりです。
+仕様変更によって不具合が起こったとしても、それに関する文句・苦情
+などは、てきとーに受け流しますのでご了承ください。
+
+<h3>◎今回の主な変更点</h3>
+<dl>
+  <dt>全般</dt>
+    <dd>・ソースのインデントや著作権表示を修正。</dd>
+  <dt>hcatIL</dt>
+    <dd>・セグメントの再宣言時に属性を指定していたのを修正。
+          (アセンブル時に警告が出ていたのが直りました)</dd>
+  <dt>hcmmlj</dt>
+    <dd>・classファイルをjarにまとめた。</dd>
+    <dd>・ファイル名指定より前でオプション指定すると正常に動かないバグを修正。</dd>
+</dl>
+
+<hr><!-- separator -->
+<h3>◎現在の主な仕様</h3>
+<ul>
+  <li>標準ではV-BLANK割り込み駆動</li>
+  <li>割り込み間隔(通常1/75秒)より短い音は出せない</li>
+  <li>PCMボイス非対応(対応予定もありません)</li>
+  <li>SoundIL非互換</li>
+  <li>まともっぽいディチューン</li>
+  <li>曲のテンポに左右されないエンベロープ</li>
+  <li>早送り・スロー再生</li>
+  <li>ソースも公開</li>
+  <li>音楽に詳しくない作者</li>
+  <li>主要な機能のいくつかが未実装(ポルタメント/スラー/その他)</li>
+  <li>主要な機能のいくつかが未テスト(複数データ同時演奏、優先度…要するに効果音周り)</li>
+</ul>
+
+<hr><!-- separator -->
+<h3>◎用語について</h3>
+WonderSwanには4チャンネルPCM音源が搭載されています。<br>
+WonderWitchの取扱説明書(Magical Book)ではこれをチャンネル1～4
+の番号で表記していますが、Humming Catでは
+チャンネル0～3と表記しています。(SoundIL用MMLでの表記と同じ)<br>
+例えばノイズ機能を持ったチャンネルは、Magical Bookでは
+チャンネル4とされていますが、Humming Catではチャンネル3と
+していますので、注意してください。
+
+<hr><!-- separator -->
+<h3>◎ディレクトリ構成</h3>
+<table align="center" width="85%">
+  <tr>
+    <td>data\</td><td>サンプルのMMLファイル</td>
+  </tr>
+  <tr>
+    <td>doc\</td><td>ドキュメント類</td>
+  </tr>
+  <tr>
+    <td>src\</td><td>ソースファイル</td>
+  </tr>
+  <tr>
+    <td>Bilder0.fr</td><td>サンプル曲のリソースファイル</td>
+  </tr>
+  <tr>
+    <td>hcat.il</td><td>ドライバ本体IL</td>
+  </tr>
+  <tr>
+    <td>hcmml.exe</td><td>MMLコンパイラ(旧仕様)</td>
+  </tr>
+  <tr>
+    <td>hcmmlj.jar</td><td>Java版MMLコンパイラ</td>
+  </tr>
+  <tr>
+    <td>hcplay.fx</td><td>データプレーヤ</td>
+  </tr>
+  <tr>
+    <td>LICENSE</td><td>ライセンス文書</td>
+  </tr>
+  <tr>
+    <td>README.md</td><td>マニュアル</td>
+  </tr>
+  <tr>
+    <td>README_ja.html</td><td>日本語版マニュアル(これ)</td>
+  </tr>
+  <tr>
+    <td>test.fr</td><td>テスト用のリソースファイル</td>
+  </tr>
+</table>
+
+
+<hr><!-- separator -->
+<h3><a name="usage">◎試してみる</a></h3>
+<p style="margin: 0% 8% 2% 8%;">
+アーカイブを展開した後、このマニュアルと同じディレクトリにあるファイル
+hcat.il、hcplay.fxをWonderWitch専用カートリッジの/rom0ディレクトリに、
+test.fr、Bilder0.frを/ram0ディレクトリに転送してください。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+そして、hcat Data Playerというプログラムを実行してください。
+ファイルの選択画面になるので、X1/X3ボタンで選んでAボタンで決定します。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+メニュー画面に変わったら、X1/X3ボタンで「Play」メニューにカーソルを
+合わせてAボタンを押すと、演奏が始まります。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+詳しい操作方法は<a href="doc/hcplay.html">データプレーヤのマニュアル</a>
+を見てください。
+</p>
+
+<hr width="50%"><!-- separator -->
+<p style="margin: 0% 8% 2% 8%;">
+演奏データを作成したい場合は、まずMMLを記述したファイルを用意し、
+MMLコンパイラに通して演奏用のリソース形式に変換します。<br>
+現在、最新版のMMLコンパイラはJavaで書かれており、実行に
+<strong>Javaランタイム環境</strong>が必要です。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+用意したMMLファイルをhcmmlj.jarと同じディレクトリに置き、
+コマンドプロンプトなどでそのディレクトリに移ってから
+</p>
+<div style="text-align: center;"><code>java -jar hcmmlj.jar test.fr test.mml</code></div>
+<p style="margin: 2% 8% 2% 8%;">
+のように入力して実行します。test.frは作成するリソースファイル、test.mmlは
+MMLファイルです。これで演奏データを作成することができます。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+MMLの書き方は<a href="doc/hcmmlj.html">MMLコンパイラのマニュアル</a>を
+見てください。また、サンプルのMMLがdata\ディレクトリ内にあるので参考までに。
+</p>
+
+<hr width="50%"><!-- separator -->
+<p style="margin: 0% 8% 2% 8%;">
+サンプル曲(Bilder0.fr)は、ムソルグスキーの「展覧会の絵」より
+「プロムナード」(冒頭の曲)です。楽譜買ってベタ打ち込みしただけで
+なんの調整もしてないので、あまり真剣に聴いてはいけません。
+(作者は音楽に詳しくないですし、普段クラシック聴きません)
+</p>
+
+<hr><!-- separator -->
+<h3><a name="environ">◎実行環境</a></h3>
+<p style="margin: 0% 8% 2% 8%;">
+Humming Catドライバ本体IL(hcat.il)、データプレーヤ(hcplay.fx)は
+WonderSwan / WonderSwanColor / SwanCrystalいずれでも動作します。
+動作確認はFreyaOS 1.2.0で行いました。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+Java版MMLコンパイラ(hcmmlj.jar)を実行するにはJavaランタイム環境が必要です。<br>
+作者の環境はJDK1.6.0_17ですが、もっと前のバージョンでも動くかもしれません。
+だめだったらJDK1.6.0_17で試してみてください。
+</p>
+<p style="margin: 0% 8% 2% 8%;">
+Javaランタイム環境が用意できない場合は、DOS / Windowsのコマンドラインで
+動作するMMLコンパイラhcmml.exeがありますが、<em>最新仕様に追いついて
+いないので機能が非常に制限されます。</em>
+また、WindowsXPのコマンドプロンプトでは画面表示がうまくいかないようです。
+(ファイル出力はちゃんとできると思います。たぶん)
+</p>
+
+<hr><!-- separator -->
+<h3><a name="build">◎ソースをアセンブル/コンパイルするには</a></h3>
+Humming Catの開発には、WonderWitch開発キット以外に次のような
+ソフトを使用しています。<br>
+これらのソフトを先にインストールしておいてください。
+バージョンは違っても大丈夫かもしれません。
+<ul>
+  <li>NASM (Netwide Assembler) 2.07</li>
+  <li>DMC (Digital Mars C/C++ Compiler) 8.51</li>
+  <li>GNU Make mingw32版 3.81</li>
+  <li>JDK (Java SE Development Kit) 1.6.0_17</li>
+</ul>
+<!--
+また、作者の開発環境の都合で、WonderWitch開発キットのインストール先が
+D:\WWitchであることを前提にしています。
+違う場所にインストールされている方は、Makefile.dmc中の'WWDIR=D:\WWitch'
+という行を適宜書き換えてください。(デフォルトではC:\WWitchのはずです)
+-->
+
+<hr><!-- separator -->
+<h3><a name="license">◎取り扱い・免責など</a></h3>
+<p>
+当初はいろいろ書いてあったのですが、MIT Licenseに変更しました。
+</p>
+
+<hr><!-- separator -->
+<h3><a name="thanks">◎謝辞</a></h3>
+まだβ版とも言えない段階のHumming Catの人柱になってくださり、
+いろいろとアドバイスしていただいたryukさんに
+この場を借りてお礼を述べさせていただきます。
+
+<hr><!-- separator -->
+<h3>◎どうでもいい裏設定</h3>
+Humming Catは、魔女さんが飼っている猫です。たぶん茶色の縞模様。<br>
+魔女さんは、他に黒猫も飼っています。2匹はとても仲良しです。
+
+<hr><!-- separator -->
+(EOF)
+
+</body>
+
+</html>
