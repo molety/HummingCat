@@ -1,6 +1,9 @@
 # HummingCat
 Sound Driver 'Humming Cat' for WonderWitch
 
+## What's this?
+Sound driver for WonderWitch, which is SDK for WonderSwan.
+
 ## Feature
 - V-BLANK driven
 - Not available PCM voice
